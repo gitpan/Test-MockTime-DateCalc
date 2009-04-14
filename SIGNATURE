@@ -1,0 +1,40 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.55.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It will check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 06b5a087ebd7358343a0bdbb022372f2cbed50ec Changes
+SHA1 f78da181dee00849c90f95b9d877bc64a11f53da MANIFEST
+SHA1 d4f11b288703495a8ae0abe5c97ff541af96341f MANIFEST.SKIP
+SHA1 8847db35b00d437cef6d3cff4e13bd8a66c45cee META.yml
+SHA1 11bbe251a69ad2c79fcc25ca5a4ca9308c45980b Makefile.PL
+SHA1 87209f30850f8fba8a01b9d46e907cffaff02bfc debian/changelog
+SHA1 ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4 debian/compat
+SHA1 2df4e2254dc73c406618d0f8afdded31b28b6201 debian/control
+SHA1 b4aa39547741a6448754c4737da58371095ab495 debian/copyright
+SHA1 64387edf011ddf9f71485e3855685316521e6a82 debian/rules
+SHA1 e61d20be1b9f413fd30a87bfe0c19db388b7883c debian/watch
+SHA1 98223eab99afa33eae7ca928d347d8c2fd7bd828 devel/TestTzsetNotImplemented.pm
+SHA1 27a58283b138a83ec01a78a9fbb0e54d9101fa57 devel/override.pl
+SHA1 091d0ee5a5aefb09a7d030687d517a4801ac1aa9 lib/Test/MockTime/DateCalc.pm
+SHA1 e12e4f1cbf69ab1c1130b76e519524567ac477ec t/DateCalc.t
+SHA1 383fa0410e583f8f919caa2a242a4d6c5d0bfc4b t/MockTime.t
+SHA1 5de70a6645b3ab58be09a5da95d854b444811296 t/not-before.t
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
+
+iD8DBQFJ49EJLFMCIV9q3ToRAkNbAKCqeVXzyZ3aHbPmNeACcHpLvqQnqQCfVJ7H
+Nf7HhmkpU+a2aK1lRjoCyN0=
+=gDum
+-----END PGP SIGNATURE-----
