@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License along
 # with Test-MockTime-DateCalc.  If not, see <http://www.gnu.org/licenses/>.
 
+use 5.002; # maybe 5.005 actually
 use strict;
 use warnings;
 use ExtUtils::MakeMaker;
@@ -27,6 +28,8 @@ WriteMakefile
    VERSION_FROM => 'lib/Test/MockTime/DateCalc.pm',
    PREREQ_PM    => {
                     'Date::Calc' => 4.0,
+                    'Test::More' => 0,
+                    'warnings'   => 0,
                    },
 
    AUTHOR       => 'Kevin Ryde <user42@zip.com.au>',
@@ -36,7 +39,7 @@ WriteMakefile
 
    # Test::MockTime version 0.10 and 0.11 had Test::MockTime::DateCalc
    # included, so recommend 0.12
-   EXTRA_META => <<'HERE',
+   EXTRA_META => strip_comments(<<'HERE'),
 recommends:
     Test::MockTime: 0.12
 optional_features:
@@ -45,6 +48,9 @@ optional_features:
         requires:
             Test::Pod: 1.00
 no_index:
+    package:
+        # use of "package Date::Calc" for mangling
+        - Date::Calc
     directory:
         - devel
         - t
@@ -53,6 +59,12 @@ resources:
     license: http://www.gnu.org/licenses/#GPL
 HERE
   );
+
+sub strip_comments {
+  my ($str) = @_;
+  $str =~ s/^\s*#.*\n//mg;
+  $str
+}
 
 sub MY::postamble {
   return <<'MAKE_FRAG';
@@ -68,7 +80,7 @@ unused:
 	for i in $(LINT_FILES); do perl -Mwarnings::unused -I lib $$i; done
 
 myman:
-	mv MANIFEST MANIFEST.old
+	-mv MANIFEST MANIFEST.old
 	touch SIGNATURE
 	(make manifest 2>&1; diff -u MANIFEST.old MANIFEST) |less
 

@@ -26,10 +26,13 @@ BEGIN {
     plan skip_all => "due to Test::MockTime not available -- $@";
   }
 }
-plan tests => 7;
+plan tests => 8;
 
 use Test::MockTime::DateCalc;
 use Date::Calc;
+
+SKIP: { eval 'use Test::NoWarnings; 1'
+          or skip 'Test::NoWarnings not available', 1; }
 
 
 my $fake_str = "10 Jan 1990 12:30:00 GMT";

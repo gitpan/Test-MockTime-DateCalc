@@ -19,19 +19,17 @@
 
 use strict;
 use warnings;
-
-use Test::More tests => 3;
+use Time::HiRes;
+use Time::Warp qw(time);
+use Test::MockTime::DateCalc;
 use Date::Calc;
 
-SKIP: { eval 'use Test::NoWarnings; 1'
-          or skip 'Test::NoWarnings not available', 1; }
-
-my $ok = eval { require Test::MockTime::DateCalc };
-my $error = $@;
-diag ($ok ? 'oops, no error' : "error message (which is expected): $error");
-
-ok (! $ok, 'should not load');
-cmp_ok (index($error,'cannot fake'), '!=', -1,
-        "error message should say 'cannot fake'");
+local $,= ' ';
+print time(), " ", Date::Calc::System_Clock(),"\n";
+Time::Warp::to(time()+86400);
+print time(), " ", Date::Calc::System_Clock(),"\n";
+Time::Warp::scale(10);
+sleep 2;
+print time(), " ", Date::Calc::System_Clock(),"\n";
 
 exit 0;

@@ -1,5 +1,5 @@
-libtest-mocktime-datecalc-perl (1-1) unstable; urgency=low
+libtest-mocktime-datecalc-perl (2-1) unstable; urgency=low
 
   * Packaged version.
 
- -- Kevin Ryde <user42@zip.com.au>  Tue, 14 Apr 2009 09:45:45 +1000
+ -- Kevin Ryde <user42@zip.com.au>  Mon, 22 Jun 2009 08:38:08 +1000

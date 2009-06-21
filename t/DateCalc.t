@@ -19,7 +19,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 20;
+use Test::More tests => 21;
 
 my $fake_time_t;
 my $overridden_time = 0;
@@ -33,7 +33,10 @@ BEGIN {
 use Test::MockTime::DateCalc;
 use Date::Calc;
 
-my $want_version = 1;
+SKIP: { eval 'use Test::NoWarnings; 1'
+          or skip 'Test::NoWarnings not available', 1; }
+
+my $want_version = 2;
 cmp_ok ($Test::MockTime::DateCalc::VERSION, '>=', $want_version,
         'VERSION variable');
 cmp_ok (Test::MockTime::DateCalc->VERSION,  '>=', $want_version,

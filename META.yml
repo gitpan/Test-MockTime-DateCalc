@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                Test-MockTime-DateCalc
-version:             1
+version:             2
 abstract:            Fake date/time for Date::Calc functions.
 license:             gpl
 author:              
@@ -9,6 +9,8 @@ generated_by:        ExtUtils::MakeMaker version 6.42
 distribution_type:   module
 requires:     
     Date::Calc:                    4
+    Test::More:                    0
+    warnings:                      0
 meta-spec:
     url:     http://module-build.sourceforge.net/META-spec-v1.3.html
     version: 1.3
@@ -20,6 +22,8 @@ optional_features:
         requires:
             Test::Pod: 1.00
 no_index:
+    package:
+        - Date::Calc
     directory:
         - devel
         - t

@@ -19,8 +19,9 @@
 package Test::MockTime::DateCalc;
 use strict;
 use warnings;
+use vars qw($VERSION);
 
-our $VERSION = 1;
+$VERSION = 2;
 
 BEGIN {
   # Check that Date::Calc isn't already loaded.
@@ -30,7 +31,7 @@ BEGIN {
   # if something goes badly wrong).  Maybe looking at %INC would be better.
   #
   if (Date::Calc->can('Week_of_Year')) {
-    die "Date::Calc already loaded, cannot fake after imports may have aliased its functions";
+    die "Date::Calc already loaded, cannot fake after imports may have grabbed its functions";
   }
 }
 
@@ -49,8 +50,8 @@ no warnings 'redefine';
 # function DateCalc_system_clock(), and also directly in its Gmtime(),
 # Localtime(), Timezone() and Time_to_Date().  In each case that of course
 # misses any fakery on the perl level time().  The replacements here go to
-# time() for the current time, and stay in Date::Calc for conversions to
-# d/m/y etc.
+# perl time() for the current time, and stay with Date::Calc for conversions
+# to d/m/y etc.
 #
 
 sub System_Clock {
@@ -111,7 +112,7 @@ Test::MockTime::DateCalc -- fake time for Date::Calc functions
 
 C<Test::MockTime::DateCalc> arranges for the functions in
 L<C<Date::Calc>|Date::Calc> to follow the Perl level C<time> function (see
-L<perlfunc>), in particular any fake date/time set there by
+L<perlfunc>), and in particular any fake date/time set there by
 L<C<Test::MockTime>|Test::MockTime>.  The following C<Date::Calc> functions
 are changed
 
@@ -126,12 +127,12 @@ are changed
     Timezone
     Time_to_Date
 
-C<Gmtime>, C<Localtime>, C<Timezone> and C<Time_to_Date> are setup to
-default to the Perl-level current C<time>; but when called with an explicit
-time argument they're unchanged.
+C<Gmtime>, C<Localtime>, C<Timezone> and C<Time_to_Date> are made to default
+to the Perl-level current C<time>; but when called with an explicit time
+argument they're unchanged.
 
-C<Test::MockTime::DateCalc> can also be used with other modules which mangle
-the Perl-level C<time>, for example L<C<Time::Fake>|Time::Fake>.
+C<Test::MockTime::DateCalc> can be used with other modules which mangle the
+Perl-level C<time> too, for example L<C<Time::Fake>|Time::Fake>.
 
     use Time::Fake;                # fakery first
     use Test::MockTime::DateCalc;
@@ -147,10 +148,10 @@ C<Test::MockTime::DateCalc> must be loaded before C<Date::Calc>.
 
 If C<Date::Calc> is already loaded then its functions might have been
 imported into other modules and such imports are not affected by the
-redefinitions made here.  For that reason C<Test::MockTime::DateCalc>
-demands that it be the one to load C<Date::Calc> for the first time.
-Usually this simply means having C<Test::MockTime::DateCalc> at the start of
-your test script, before the things you're going to test.
+redefinitions made.  For that reason C<Test::MockTime::DateCalc> demands it
+be the one to load C<Date::Calc> for the first time.  Usually this simply
+means having C<Test::MockTime::DateCalc> at the start of your test script,
+before the things you're going to test.
 
     use strict;
     use warnings;
@@ -164,8 +165,8 @@ your test script, before the things you're going to test.
     restore_time();
 
 In a test script it's often good to have your own modules first to check
-they load all their pre-requisites.  You might want to have a separate test
-script for that to see you don't accidentally rely on
+they correctly load their pre-requisites.  You might want to have a separate
+test script for that so you don't accidentally rely on
 C<Test::MockTime::DateCalc> loading C<Date::Calc> for you.
 
 =head1 SEE ALSO
