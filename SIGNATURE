@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.55.
+signed via the Module::Signature module, version 0.61.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -14,32 +14,37 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 3bffe4dd6a3511a26f2a93bfee75cca524b4e120 Changes
-SHA1 53a4f270fc3e550e4158547224a3e485842174d9 MANIFEST
-SHA1 34219d8b7a589aa1d979fdc095799b894a6814d5 MANIFEST.SKIP
-SHA1 3257cebe02b7e74906853a9c858bb81fed532c40 META.yml
-SHA1 5b659efb498e70125ee888be86d8c60aab7d16d9 Makefile.PL
-SHA1 c516007e4d9409a1b85ec8fc81970fba38f4f9ed debian/changelog
+SHA1 842745cb706f8f2126506f544492f7a80dbe29b3 COPYING
+SHA1 d762399c5f37e628e9ff7cfae9f0aeb883bc9ec7 Changes
+SHA1 96539eaf21af062688628611a90eda4de0393cc4 MANIFEST
+SHA1 a5702ed4c66c943b47354756b340812302d15e6f MANIFEST.SKIP
+SHA1 435801ae859efb69aee81677586eb7ad2d6131aa META.yml
+SHA1 a1a1600ab56e1a9e019c333126901444e23cebb6 Makefile.PL
+SHA1 7c91a1183099b8495ce3e7c9110620379e66f525 debian/changelog
 SHA1 ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4 debian/compat
-SHA1 8305858b71d3c0088542a9a955cbc671e2195392 debian/control
-SHA1 b4aa39547741a6448754c4737da58371095ab495 debian/copyright
+SHA1 92116ffddc6c040fdeb1b405327d9cfa414a139f debian/control
+SHA1 d87c91a794e32a1c23c3c2882dd8bbebe142a6cb debian/copyright
 SHA1 64387edf011ddf9f71485e3855685316521e6a82 debian/rules
-SHA1 e61d20be1b9f413fd30a87bfe0c19db388b7883c debian/watch
+SHA1 9e6239e564723d8d60e6f9c9aeb4e8750f61fe13 debian/watch
 SHA1 27a58283b138a83ec01a78a9fbb0e54d9101fa57 devel/override.pl
+SHA1 615f17de8b066060a7bf8f707c338c4c1c0bd7fa devel/redef.pl
 SHA1 82a76e8c57659b51e5a1d00c96a0352b8bb0947f devel/time-fake.pl
-SHA1 0dd2254772f114c787aad26b72d0d6122544c6ad devel/time-warp.pl
-SHA1 a178ba3d4b5a032d9110544a40b0fb326e27eb33 lib/Test/MockTime/DateCalc.pm
-SHA1 dbe681fa970c63a2c2f988c2191292f6f1149d76 t/0-META-read.t
+SHA1 701768e4ac01a927a9a4aca05697026a747c54d3 devel/time-mock.pl
+SHA1 5aea5c5479d67823030c1025c8e65f890ecd04de devel/time-warp.pl
+SHA1 89dd306a01b5719586e53f05938f9b28ab94717e inc/MyMakeMakerExtras.pm
+SHA1 63427b66eb26f013f10c835b0cf320c93361f310 inc/my_pod2html
+SHA1 b1dcaec1d2c7a6b1136d5a69825c762a78911fe0 lib/Test/MockTime/DateCalc.pm
+SHA1 11eda0347af48309996833a4da214197e31b85fb t/0-META-read.t
 SHA1 a343ed4dce96d05de51eed1ec065911584b96fce t/0-Test-DistManifest.t
-SHA1 08742828a8bf6f21a999ed9760cbfbfcbc8f1c46 t/0-Test-Pod.t
-SHA1 1ca294949007397f7928e494900d203365bb41f6 t/0-Test-YAML-Meta.t
-SHA1 88d38be6779bfeb67f7247f2541e681737492c52 t/DateCalc.t
-SHA1 c170eef3dd27d132ecb521de50ad6c97675b2866 t/MockTime.t
-SHA1 f94844bf4113fcf1e8f53de01214797d4c02c27d t/not-before.t
+SHA1 bba0dc087cbe64d8f100ab77e6cef061c0bebf27 t/0-Test-Pod.t
+SHA1 9a19fa262c1cc6ee6afe638600ce880500a91946 t/0-Test-YAML-Meta.t
+SHA1 9e418f81b77c2f73e413940ad034aa512424cc3a t/DateCalc.t
+SHA1 64f33aae46e9bae3a3979dd4b5a2bad8d735cf7b t/MockTime.t
+SHA1 5f7ade7f346f4c0bbc883b2e6bd8f1b64d906a8b t/not-before.t
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
+Version: GnuPG v1.4.10 (GNU/Linux)
 
-iD8DBQFKPrZ5LFMCIV9q3ToRAuEVAJ9/DW6bNtYrmgLF8OtdaswACIZk1ACePVEM
-7kuYqBB8TILssrDTf4iO23E=
-=IcFa
+iD8DBQFLhwiCLFMCIV9q3ToRAl3kAJ9mXn4s08IOIXE/jf/TWtB+SsNuvACdH4cH
+yQNruB71GtpP/Cswar86QKo=
+=MJ+d
 -----END PGP SIGNATURE-----

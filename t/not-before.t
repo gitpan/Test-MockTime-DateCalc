@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# Copyright 2009 Kevin Ryde
+# Copyright 2009, 2010 Kevin Ryde
 
 # This file is part of Test-MockTime-DateCalc.
 #
@@ -23,15 +23,15 @@ use warnings;
 use Test::More tests => 3;
 use Date::Calc;
 
-SKIP: { eval 'use Test::NoWarnings; 1'
-          or skip 'Test::NoWarnings not available', 1; }
+BEGIN { SKIP: { eval 'use Test::NoWarnings; 1'
+                  or skip 'Test::NoWarnings not available', 1; } }
 
 my $ok = eval { require Test::MockTime::DateCalc };
 my $error = $@;
-diag ($ok ? 'oops, no error' : "error message (which is expected): $error");
+diag ($ok ? 'oops, no error' : "error message (expected): $error");
 
 ok (! $ok, 'should not load');
-cmp_ok (index($error,'cannot fake'), '!=', -1,
-        "error message should say 'cannot fake'");
+like ($error, '/cannot fake/',
+      "error message should say 'cannot fake'");
 
 exit 0;

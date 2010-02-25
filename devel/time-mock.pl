@@ -17,27 +17,18 @@
 # You should have received a copy of the GNU General Public License along
 # with Test-MockTime-DateCalc.  If not, see <http://www.gnu.org/licenses/>.
 
-
-# Time::Warp is only an export of a time() func, so doesn't get the core
-# global override expected by Test::MockTime::DateCalc etc.
-
 use strict;
 use warnings;
-use Time::HiRes;
-use Time::Warp;
+use Time::Mock;
 use Test::MockTime::DateCalc;
 use Date::Calc;
 
-sub tim {
-  return Time::HiRes::time();
-}
-
 local $,= ' ';
-print tim(), " ", Date::Calc::System_Clock(),"\n";
-Time::Warp::to(tim()+86400);
-print tim(), " ", Date::Calc::System_Clock(),"\n";
-Time::Warp::scale(10);
-sleep 2;
-print tim(), " ", Date::Calc::System_Clock(),"\n";
+print time(), " ", Date::Calc::System_Clock(),"\n";
+Time::Mock->offset(86400);
+print time(), " ", Date::Calc::System_Clock(),"\n";
+Time::Mock->throttle(10);
+CORE::sleep(2);
+print time(), " ", Date::Calc::System_Clock(),"\n";
 
 exit 0;

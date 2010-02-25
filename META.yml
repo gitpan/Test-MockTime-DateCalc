@@ -1,32 +1,60 @@
 --- #YAML:1.0
-name:                Test-MockTime-DateCalc
-version:             2
-abstract:            Fake date/time for Date::Calc functions.
-license:             gpl
-author:              
+name:               Test-MockTime-DateCalc
+version:            3
+abstract:           Fake date/time for Date::Calc functions.
+author:
     - Kevin Ryde <user42@zip.com.au>
-generated_by:        ExtUtils::MakeMaker version 6.42
-distribution_type:   module
-requires:     
-    Date::Calc:                    4
-    Test::More:                    0
-    warnings:                      0
-meta-spec:
-    url:     http://module-build.sourceforge.net/META-spec-v1.3.html
-    version: 1.3
-recommends:
-    Test::MockTime: 0.12
-optional_features:
-    maximum_tests:
-        description: Have "make test" do as much as possible.
-        requires:
-            Test::Pod: 1.00
+license:            unknown
+distribution_type:  module
+configure_requires:
+    ExtUtils::MakeMaker:  0
+build_requires:
+    ExtUtils::MakeMaker:  0
+requires:
+    Date::Calc:  4
+    perl:        5.002
+    Test::More:  0
+    warnings:    0
+resources:
+    homepage:  http://user42.tuxfamily.org/test-mocktime-datecalc/index.html
+    license:   http://www.gnu.org/licenses/gpl.html
 no_index:
+    directory:
+        - t
+        - inc
+        - devel
     package:
         - Date::Calc
-    directory:
-        - devel
-        - t
-resources:
-    homepage: http://www.geocities.com/user42_kevin/test-mocktime-datecalc/index.html
-    license: http://www.gnu.org/licenses/#GPL
+generated_by:       ExtUtils::MakeMaker version 6.55_02
+meta-spec:
+    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
+    version:  1.4
+optional_features:
+    maximum_devel:
+        description:  Stuff used variously for development.
+        requires:
+            base:               0
+            constant:           0
+            Devel::Peek:        0
+            Pod::Simple::HTML:  0
+            Time::Fake:         0
+            Time::HiRes:        0
+            Time::Mock:         0
+            Time::Warp:         0
+    maximum_tests:
+        description:  Have "make test" do as much as possible.
+        requires:
+            File::Spec:          0
+            FindBin:             0
+            Parse::CPAN::Meta:   0
+            Test::DistManifest:  0
+            Test::MockTime:      0
+            Test::NoWarnings:    0
+            Test::Pod:           1.00
+            Test::YAML::Meta:    0.13
+            YAML:                0
+            YAML::Syck:          0
+            YAML::Tiny:          0
+            YAML::XS:            0
+recommends:
+    Test::MockTime:  0.12

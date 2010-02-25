@@ -1,4 +1,4 @@
-# Copyright 2009 Kevin Ryde
+# Copyright 2009, 2010 Kevin Ryde
 
 # This file is part of Test-MockTime-DateCalc.
 #
@@ -21,7 +21,7 @@ use strict;
 use warnings;
 use vars qw($VERSION);
 
-$VERSION = 2;
+$VERSION = 3;
 
 BEGIN {
   # Check that Date::Calc isn't already loaded.
@@ -110,11 +110,10 @@ Test::MockTime::DateCalc -- fake time for Date::Calc functions
 
 =head1 DESCRIPTION
 
-C<Test::MockTime::DateCalc> arranges for the functions in
-L<C<Date::Calc>|Date::Calc> to follow the Perl level C<time> function (see
-L<perlfunc>), and in particular any fake date/time set there by
-L<C<Test::MockTime>|Test::MockTime>.  The following C<Date::Calc> functions
-are changed
+C<Test::MockTime::DateCalc> arranges for the functions in C<Date::Calc> to
+follow the Perl level C<time> function (see L<perlfunc>), and in particular
+any fake date/time set there by C<Test::MockTime>.  The following
+C<Date::Calc> functions are changed
 
     System_Clock
     Today
@@ -128,19 +127,29 @@ are changed
     Time_to_Date
 
 C<Gmtime>, C<Localtime>, C<Timezone> and C<Time_to_Date> are made to default
-to the Perl-level current C<time>; but when called with an explicit time
+to the Perl-level current C<time>.  When called with an explicit time
 argument they're unchanged.
 
+=head2 Other Faking Modules
+
 C<Test::MockTime::DateCalc> can be used with other modules which mangle the
-Perl-level C<time> too, for example L<C<Time::Fake>|Time::Fake>.
+Perl-level C<time> too.  For example C<Time::Fake>,
 
     use Time::Fake;                # fakery first
     use Test::MockTime::DateCalc;
 
+Or C<Time::Mock>,
+
+    use Time::Mock;                # fakery first
+    use Test::MockTime::DateCalc;
+
 Remember that like all C<CORE::GLOBAL> overrides you must set an overridden
-C<time> function before loading any code which might use it, in this case
+C<time> function before loading any code which might use it, which means
 before loading C<Test::MockTime::DateCalc> (see L<CORE/OVERRIDING CORE
 FUNCTIONS>).
+
+C<Time::Warp> (as of version 0.5) only exports a new C<time>, it's not a
+core override and so can't be used with C<Test::MockTime::DateCalc>.
 
 =head2 C<Date::Calc> Load Order
 
@@ -164,22 +173,22 @@ before the things you're going to test.
     is (My::Foo::Bar::something(), 1981);
     restore_time();
 
-In a test script it's often good to have your own modules first to check
-they correctly load their pre-requisites.  You might want to have a separate
-test script for that so you don't accidentally rely on
+In a test script it's often good to have your own modules early to check
+they correctly load their pre-requisites.  You might want a separate test
+script for that so you don't accidentally rely on
 C<Test::MockTime::DateCalc> loading C<Date::Calc> for you.
 
 =head1 SEE ALSO
 
-L<Test::MockTime>, L<Date::Calc>, L<Time::Fake>
+L<Test::MockTime>, L<Date::Calc>, L<Time::Fake>, L<Time::Mock>
 
 =head1 HOME PAGE
 
-L<http://www.geocities.com/user42_kevin/test-mocktime-datecalc/>
+http://user42.tuxfamily.org/test-mocktime-datecalc/index.html
 
 =head1 COPYRIGHT
 
-Copyright 2009 Kevin Ryde
+Copyright 2009, 2010 Kevin Ryde
 
 Test-MockTime-DateCalc is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License as published by
@@ -192,6 +201,6 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
 Public License for more details.
 
 You should have received a copy of the GNU General Public License along with
-Test-MockTime-DateCalc.  If not, see L<http://www.gnu.org/licenses/>.
+Test-MockTime-DateCalc.  If not, see <http://www.gnu.org/licenses/>.
 
 =cut

@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# Copyright 2009 Kevin Ryde
+# Copyright 2009, 2010 Kevin Ryde
 
 # This file is part of Test-MockTime-DateCalc.
 #
@@ -25,14 +25,14 @@ BEGIN {
   if (! eval { require Test::MockTime }) {
     plan skip_all => "due to Test::MockTime not available -- $@";
   }
+  plan tests => 8;
+
+ SKIP: { eval 'use Test::NoWarnings; 1'
+           or skip 'Test::NoWarnings not available', 1; }
 }
-plan tests => 8;
 
 use Test::MockTime::DateCalc;
 use Date::Calc;
-
-SKIP: { eval 'use Test::NoWarnings; 1'
-          or skip 'Test::NoWarnings not available', 1; }
 
 
 my $fake_str = "10 Jan 1990 12:30:00 GMT";

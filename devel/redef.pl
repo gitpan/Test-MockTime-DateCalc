@@ -18,26 +18,35 @@
 # with Test-MockTime-DateCalc.  If not, see <http://www.gnu.org/licenses/>.
 
 
-# Time::Warp is only an export of a time() func, so doesn't get the core
-# global override expected by Test::MockTime::DateCalc etc.
-
+package Foo;
 use strict;
 use warnings;
-use Time::HiRes;
-use Time::Warp;
-use Test::MockTime::DateCalc;
-use Date::Calc;
+use Date::Calc ('Today');
 
-sub tim {
-  return Time::HiRes::time();
+sub foo_today {
+  return Today();
 }
 
-local $,= ' ';
-print tim(), " ", Date::Calc::System_Clock(),"\n";
-Time::Warp::to(tim()+86400);
-print tim(), " ", Date::Calc::System_Clock(),"\n";
-Time::Warp::scale(10);
-sleep 2;
-print tim(), " ", Date::Calc::System_Clock(),"\n";
+package main;
+use Date::Calc;
+*Date::Calc::Today = sub {
+  print "fake\n";
+  return (1980, 1, 1);
+};
+
+print Foo::foo_today(),"\n";
+
+
+my $orig = \&Foo::foo_today;
+*Foo::foo_today = sub {
+  print "redef\n";
+  return 'x';
+};
+print Foo::foo_today(),"\n";
+print &$orig(),"\n";
+
+use Devel::Peek;
+Dump($orig);
+Dump(\&Foo::foo_today);
 
 exit 0;

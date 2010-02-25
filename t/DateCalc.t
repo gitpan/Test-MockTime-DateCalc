@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# Copyright 2009 Kevin Ryde
+# Copyright 2009, 2010 Kevin Ryde
 
 # This file is part of Test-MockTime-DateCalc.
 #
@@ -21,9 +21,14 @@ use strict;
 use warnings;
 use Test::More tests => 21;
 
+BEGIN { SKIP: { eval 'use Test::NoWarnings; 1'
+                  or skip 'Test::NoWarnings not available', 1; } }
+
 my $fake_time_t;
-my $overridden_time = 0;
+my $overridden_time;
+
 BEGIN {
+  $overridden_time = 0;
   *CORE::GLOBAL::time = sub () {
     $overridden_time++;
     return $fake_time_t;
@@ -33,15 +38,13 @@ BEGIN {
 use Test::MockTime::DateCalc;
 use Date::Calc;
 
-SKIP: { eval 'use Test::NoWarnings; 1'
-          or skip 'Test::NoWarnings not available', 1; }
-
-my $want_version = 2;
-cmp_ok ($Test::MockTime::DateCalc::VERSION, '>=', $want_version,
-        'VERSION variable');
-cmp_ok (Test::MockTime::DateCalc->VERSION,  '>=', $want_version,
-        'VERSION class method');
-{ ok (eval { Test::MockTime::DateCalc->VERSION($want_version); 1 },
+{
+  my $want_version = 3;
+  is ($Test::MockTime::DateCalc::VERSION, $want_version,
+      'VERSION variable');
+  is (Test::MockTime::DateCalc->VERSION, $want_version,
+      'VERSION class method');
+  ok (eval { Test::MockTime::DateCalc->VERSION($want_version); 1 },
       "VERSION class check $want_version");
   my $check_version = $want_version + 1000;
   ok (! eval { Test::MockTime::DateCalc->VERSION($check_version); 1 },
@@ -49,8 +52,9 @@ cmp_ok (Test::MockTime::DateCalc->VERSION,  '>=', $want_version,
 }
 
 {
+  ## no critic (RequireCheckingReturnValueOfEval)
   require POSIX;
-  eval { POSIX::tzset() }; # could die "not implemented"
+  eval { POSIX::tzset() }; # can die with "not implemented"
   diag "TZ is '", (defined $ENV{TZ} ? $ENV{TZ} : 'undef'), "'";
 }
 
