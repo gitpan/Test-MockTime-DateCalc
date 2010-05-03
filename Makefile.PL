@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License along
 # with Test-MockTime-DateCalc.  If not, see <http://www.gnu.org/licenses/>.
 
-use 5.002; # maybe 5.005 actually
+require 5; # maybe 5.004 actually
 use strict;
 use warnings;
 use ExtUtils::MakeMaker;
@@ -31,11 +31,13 @@ MyMakeMakerExtras::WriteMakefile
    AUTHOR       => 'Kevin Ryde <user42@zip.com.au>',
    SIGN         => 1,
    PREREQ_PM    => {
-                    'Date::Calc' => 4.0,
-                    'Test::More' => 0,
                     'warnings'   => 0,
+                    'Date::Calc' => 4.0,
+
+                    # only for "make test"
+                    'Test::More' => 0,
                    },
-   MIN_PERL_VERSION => '5.002',
+   MIN_PERL_VERSION => '5',
 
 
    META_MERGE
@@ -58,19 +60,21 @@ MyMakeMakerExtras::WriteMakefile
         optional_features
         => { maximum_tests
              => { description => 'Have "make test" do as much as possible.',
-                  requires => { 'Test::MockTime' => 0,
+                  requires => { 'Test::MockTime'   => 0,
                                 'Test::NoWarnings' => 0,
+                                'Sub::Identify'    => 0,
                               },
                 },
              maximum_devel
              => { description => 'Stuff used variously for development.',
-                  requires => { 'base'        => 0,
-                                'constant'    => 0,
-                                'Time::Fake'  => 0,
-                                'Time::HiRes' => 0,
-                                'Time::Mock'  => 0,
-                                'Time::Warp'  => 0,
-                                'Devel::Peek' => 0,
+                  requires => { 'base'          => 0,
+                                'constant'      => 0,
+                                'Time::Fake'    => 0,
+                                'Time::HiRes'   => 0,
+                                'Time::Mock'    => 0,
+                                'Time::Warp'    => 0,
+                                'Devel::Peek'   => 0,
+                                'Sub::Identify' => 0,
                               },
                 },
            },

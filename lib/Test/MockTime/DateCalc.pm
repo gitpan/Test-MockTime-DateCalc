@@ -21,7 +21,7 @@ use strict;
 use warnings;
 use vars qw($VERSION);
 
-$VERSION = 3;
+$VERSION = 4;
 
 BEGIN {
   # Check that Date::Calc isn't already loaded.
@@ -75,27 +75,31 @@ sub This_Year {
   # anonymous sub to avoid adding anything to the Date::Calc namespace
   my $default_to_time_func = sub {
     my ($func, $time) = @_;
-    if (! defined $time) {
-      $time = time();
-    }
+    if (! defined $time) { $time = time(); }
     return $func->($time);
   };
-  { my $orig = \&Gmtime;
-    *Gmtime = sub { return $default_to_time_func->($orig, @_) };
+  { my $orig;
+    BEGIN { $orig = \&Gmtime; }
+    sub Gmtime { return &$default_to_time_func ($orig, @_) }
   }
-  { my $orig = \&Localtime;
-    *Localtime = sub { return $default_to_time_func->($orig, @_) };
+  { my $orig;
+    BEGIN { $orig = \&Localtime; }
+    sub Localtime { return &$default_to_time_func ($orig, @_) }
   }
-  { my $orig = \&Timezone;
-    *Timezone = sub { return $default_to_time_func->($orig, @_) };
+  { my $orig;
+    BEGIN { $orig = \&Timezone; }
+    sub Timezone { return &$default_to_time_func ($orig, @_) }
   }
-  { my $orig = \&Time_to_Date;
-    *Time_to_Date = sub { return $default_to_time_func->($orig, @_) };
+  { my $orig;
+    BEGIN { $orig = \&Time_to_Date; }
+    sub Time_to_Date { return &$default_to_time_func ($orig, @_) }
   }
 }
 
 1;
 __END__
+
+=for stopwords pre Ryde Test-MockTime-DateCalc pre-requisites
 
 =head1 NAME
 
@@ -130,37 +134,20 @@ C<Gmtime>, C<Localtime>, C<Timezone> and C<Time_to_Date> are made to default
 to the Perl-level current C<time>.  When called with an explicit time
 argument they're unchanged.
 
-=head2 Other Faking Modules
+=head2 Module Load Order
 
-C<Test::MockTime::DateCalc> can be used with other modules which mangle the
-Perl-level C<time> too.  For example C<Time::Fake>,
+C<Test::MockTime> or similar fakery must be loaded first, before anything
+with a C<time()> call, which includes C<Test::MockTime::DateCalc>.  This is
+the same as all C<CORE::GLOBAL> overrides, see L<CORE/OVERRIDING CORE
+FUNCTIONS>.
 
-    use Time::Fake;                # fakery first
-    use Test::MockTime::DateCalc;
-
-Or C<Time::Mock>,
-
-    use Time::Mock;                # fakery first
-    use Test::MockTime::DateCalc;
-
-Remember that like all C<CORE::GLOBAL> overrides you must set an overridden
-C<time> function before loading any code which might use it, which means
-before loading C<Test::MockTime::DateCalc> (see L<CORE/OVERRIDING CORE
-FUNCTIONS>).
-
-C<Time::Warp> (as of version 0.5) only exports a new C<time>, it's not a
-core override and so can't be used with C<Test::MockTime::DateCalc>.
-
-=head2 C<Date::Calc> Load Order
-
-C<Test::MockTime::DateCalc> must be loaded before C<Date::Calc>.
-
-If C<Date::Calc> is already loaded then its functions might have been
-imported into other modules and such imports are not affected by the
-redefinitions made.  For that reason C<Test::MockTime::DateCalc> demands it
-be the one to load C<Date::Calc> for the first time.  Usually this simply
-means having C<Test::MockTime::DateCalc> at the start of your test script,
-before the things you're going to test.
+C<Test::MockTime::DateCalc> must be loaded before C<Date::Calc>.  If
+C<Date::Calc> is already loaded then its functions might have been imported
+into other modules and such imports are not affected by the redefinitions
+made.  For that reason C<Test::MockTime::DateCalc> demands it be the one to
+load C<Date::Calc> for the first time.  Usually this simply means having
+C<Test::MockTime::DateCalc> at the start of a test script, before the things
+you're going to test.
 
     use strict;
     use warnings;
@@ -178,9 +165,25 @@ they correctly load their pre-requisites.  You might want a separate test
 script for that so you don't accidentally rely on
 C<Test::MockTime::DateCalc> loading C<Date::Calc> for you.
 
+=head2 Other Faking Modules
+
+C<Test::MockTime::DateCalc> can be used with other modules which mangle the
+Perl-level C<time> too.  For example C<Time::Fake>,
+
+    use Time::Fake;                # fakery first
+    use Test::MockTime::DateCalc;
+
+Or C<Time::Mock>,
+
+    use Time::Mock;                # fakery first
+    use Test::MockTime::DateCalc;
+
+C<Time::Warp> (as of version 0.5) only exports a new C<time>, it's not a
+core override and so can't be used with C<Test::MockTime::DateCalc>.
+
 =head1 SEE ALSO
 
-L<Test::MockTime>, L<Date::Calc>, L<Time::Fake>, L<Time::Mock>
+L<Date::Calc>, L<Test::MockTime>, L<Time::Fake>, L<Time::Mock>
 
 =head1 HOME PAGE
 

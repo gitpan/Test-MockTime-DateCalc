@@ -39,16 +39,22 @@ use Test::MockTime::DateCalc;
 use Date::Calc;
 
 {
-  my $want_version = 3;
+  my $want_version = 4;
   is ($Test::MockTime::DateCalc::VERSION, $want_version,
       'VERSION variable');
-  is (Test::MockTime::DateCalc->VERSION, $want_version,
-      'VERSION class method');
-  ok (eval { Test::MockTime::DateCalc->VERSION($want_version); 1 },
-      "VERSION class check $want_version");
-  my $check_version = $want_version + 1000;
-  ok (! eval { Test::MockTime::DateCalc->VERSION($check_version); 1 },
-      "VERSION class check $check_version");
+
+ SKIP: {
+    $] >= 5.004
+      or skip 'UNIVERSAL->VERSION new in 5.004', 3;
+
+    is (Test::MockTime::DateCalc->VERSION, $want_version,
+        'VERSION class method');
+    ok (eval { Test::MockTime::DateCalc->VERSION($want_version); 1 },
+        "VERSION class check $want_version");
+    my $check_version = $want_version + 1000;
+    ok (! eval { Test::MockTime::DateCalc->VERSION($check_version); 1 },
+        "VERSION class check $check_version");
+  }
 }
 
 {

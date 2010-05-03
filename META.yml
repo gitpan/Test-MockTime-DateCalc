@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Test-MockTime-DateCalc
-version:            3
+version:            4
 abstract:           Fake date/time for Date::Calc functions.
 author:
     - Kevin Ryde <user42@zip.com.au>
@@ -12,7 +12,7 @@ build_requires:
     ExtUtils::MakeMaker:  0
 requires:
     Date::Calc:  4
-    perl:        5.002
+    perl:        5
     Test::More:  0
     warnings:    0
 resources:
@@ -37,6 +37,7 @@ optional_features:
             constant:           0
             Devel::Peek:        0
             Pod::Simple::HTML:  0
+            Sub::Identify:      0
             Time::Fake:         0
             Time::HiRes:        0
             Time::Mock:         0
@@ -47,6 +48,7 @@ optional_features:
             File::Spec:          0
             FindBin:             0
             Parse::CPAN::Meta:   0
+            Sub::Identify:       0
             Test::DistManifest:  0
             Test::MockTime:      0
             Test::NoWarnings:    0
