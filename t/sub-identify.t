@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
 
 # Copyright 2009, 2010 Kevin Ryde
 
@@ -24,10 +24,11 @@ use Test::More;
 eval { require Sub::Identify; 1 }
   or plan skip_all => "Sub::Identify not available -- $@";
 
-plan tests => 10;
+use lib 't';
+use MyTestHelpers;
+BEGIN { MyTestHelpers::nowarnings() }
 
-SKIP: { eval 'use Test::NoWarnings; 1'
-          or skip 'Test::NoWarnings not available', 1; }
+plan tests => 9;
 
 require Test::MockTime::DateCalc;
 require Date::Calc;

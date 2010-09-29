@@ -21,7 +21,7 @@ use strict;
 use warnings;
 use vars qw($VERSION);
 
-$VERSION = 4;
+$VERSION = 5;
 
 BEGIN {
   # Check that Date::Calc isn't already loaded.
@@ -109,7 +109,7 @@ Test::MockTime::DateCalc -- fake time for Date::Calc functions
 
  use Test::MockTime;
  use Test::MockTime::DateCalc; # before Date::Calc loads
- ...
+ # ...
  use My::Module::Using::Date::Calc;
 
 =head1 DESCRIPTION
@@ -184,6 +184,8 @@ core override and so can't be used with C<Test::MockTime::DateCalc>.
 =head1 SEE ALSO
 
 L<Date::Calc>, L<Test::MockTime>, L<Time::Fake>, L<Time::Mock>
+
+L<faketime(1)>
 
 =head1 HOME PAGE
 

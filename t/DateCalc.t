@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
 
 # Copyright 2009, 2010 Kevin Ryde
 
@@ -19,10 +19,11 @@
 
 use strict;
 use warnings;
-use Test::More tests => 21;
+use Test::More tests => 20;
 
-BEGIN { SKIP: { eval 'use Test::NoWarnings; 1'
-                  or skip 'Test::NoWarnings not available', 1; } }
+use lib 't';
+use MyTestHelpers;
+BEGIN { MyTestHelpers::nowarnings() }
 
 my $fake_time_t;
 my $overridden_time;
@@ -39,7 +40,7 @@ use Test::MockTime::DateCalc;
 use Date::Calc;
 
 {
-  my $want_version = 4;
+  my $want_version = 5;
   is ($Test::MockTime::DateCalc::VERSION, $want_version,
       'VERSION variable');
 

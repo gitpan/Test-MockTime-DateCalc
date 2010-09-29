@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Test-MockTime-DateCalc
-version:            4
+version:            5
 abstract:           Fake date/time for Date::Calc functions.
 author:
     - Kevin Ryde <user42@zip.com.au>
@@ -42,6 +42,7 @@ optional_features:
             Time::HiRes:        0
             Time::Mock:         0
             Time::Warp:         0
+            warnings::unused:   0
     maximum_tests:
         description:  Have "make test" do as much as possible.
         requires:
@@ -51,9 +52,8 @@ optional_features:
             Sub::Identify:       0
             Test::DistManifest:  0
             Test::MockTime:      0
-            Test::NoWarnings:    0
             Test::Pod:           1.00
-            Test::YAML::Meta:    0.13
+            Test::YAML::Meta:    0.15
             YAML:                0
             YAML::Syck:          0
             YAML::Tiny:          0

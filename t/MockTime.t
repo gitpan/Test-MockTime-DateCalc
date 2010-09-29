@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
 
 # Copyright 2009, 2010 Kevin Ryde
 
@@ -21,14 +21,15 @@ use strict;
 use warnings;
 use Test::More;
 
+use lib 't';
+use MyTestHelpers;
+BEGIN { MyTestHelpers::nowarnings() }
+
 BEGIN {
   if (! eval { require Test::MockTime }) {
     plan skip_all => "due to Test::MockTime not available -- $@";
   }
-  plan tests => 8;
-
- SKIP: { eval 'use Test::NoWarnings; 1'
-           or skip 'Test::NoWarnings not available', 1; }
+  plan tests => 7;
 }
 
 use Test::MockTime::DateCalc;

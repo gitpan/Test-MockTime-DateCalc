@@ -61,7 +61,6 @@ MyMakeMakerExtras::WriteMakefile
         => { maximum_tests
              => { description => 'Have "make test" do as much as possible.',
                   requires => { 'Test::MockTime'   => 0,
-                                'Test::NoWarnings' => 0,
                                 'Sub::Identify'    => 0,
                               },
                 },
