@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# Copyright 2009, 2010 Kevin Ryde
+# Copyright 2009, 2010, 2011 Kevin Ryde
 
 # This file is part of Test-MockTime-DateCalc.
 #
@@ -19,7 +19,6 @@
 
 require 5; # maybe 5.004 actually
 use strict;
-use warnings;
 use ExtUtils::MakeMaker;
 use lib 'inc';
 use MyMakeMakerExtras;
@@ -31,51 +30,46 @@ MyMakeMakerExtras::WriteMakefile
    AUTHOR       => 'Kevin Ryde <user42@zip.com.au>',
    SIGN         => 1,
    PREREQ_PM    => {
-                    'warnings'   => 0,
                     'Date::Calc' => 4.0,
-
-                    # only for "make test"
-                    'Test::More' => 0,
+                    'Test' => 0,
                    },
    MIN_PERL_VERSION => '5',
 
 
-   META_MERGE
-   => { resources
-        => { homepage
-             => 'http://user42.tuxfamily.org/test-mocktime-datecalc/index.html',
-           },
-        recommends
-        => {
-            # Test::MockTime version 0.10 and 0.11 included
-            # Test::MockTime::DateCalc, so recommend 0.12
-            'Test::MockTime' => '0.12',
-           },
-        no_index
-        => {
-            # use of "package Date::Calc" for mangling
-            package => [ 'Date::Calc' ],
-           },
+   META_MERGE =>
+   { resources =>
+     { homepage =>
+       'http://user42.tuxfamily.org/test-mocktime-datecalc/index.html',
+     },
+     recommends => {
+                    # Test::MockTime version 0.10 and 0.11 included
+                    # Test::MockTime::DateCalc, so recommend 0.12
+                    'Test::MockTime' => '0.12',
+                   },
+     no_index => {
+                  # use of "package Date::Calc" for mangling
+                  package => [ 'Date::Calc' ],
+                 },
 
-        optional_features
-        => { maximum_tests
-             => { description => 'Have "make test" do as much as possible.',
-                  requires => { 'Test::MockTime'   => 0,
-                                'Sub::Identify'    => 0,
-                              },
-                },
-             maximum_devel
-             => { description => 'Stuff used variously for development.',
-                  requires => { 'base'          => 0,
-                                'constant'      => 0,
-                                'Time::Fake'    => 0,
-                                'Time::HiRes'   => 0,
-                                'Time::Mock'    => 0,
-                                'Time::Warp'    => 0,
-                                'Devel::Peek'   => 0,
-                                'Sub::Identify' => 0,
-                              },
-                },
-           },
-      },
+     optional_features =>
+     { maximum_tests =>
+       { description => 'Have "make test" do as much as possible.',
+         requires => { 'Test::MockTime'   => 0,
+                       'Sub::Identify'    => 0,
+                     },
+       },
+       maximum_devel =>
+       { description => 'Stuff used variously for development.',
+         requires => { 'base'          => 0,
+                       'constant'      => 0,
+                       'Time::Fake'    => 0,
+                       'Time::HiRes'   => 0,
+                       'Time::Mock'    => 0,
+                       'Time::Warp'    => 0,
+                       'Devel::Peek'   => 0,
+                       'Sub::Identify' => 0,
+                     },
+       },
+     },
+   },
   );

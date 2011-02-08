@@ -1,4 +1,4 @@
-# Copyright 2009, 2010 Kevin Ryde
+# Copyright 2009, 2010, 2011 Kevin Ryde
 
 # This file is part of Test-MockTime-DateCalc.
 #
@@ -18,10 +18,9 @@
 
 package Test::MockTime::DateCalc;
 use strict;
-use warnings;
 use vars qw($VERSION);
 
-$VERSION = 5;
+$VERSION = 6;
 
 BEGIN {
   # Check that Date::Calc isn't already loaded.
@@ -40,11 +39,8 @@ BEGIN {
 #
 use Date::Calc 4.0;
 
-
 package Date::Calc;
 use strict;
-use warnings;
-no warnings 'redefine';
 
 # Calc.xs in Date::Calc calls to the C time() func from its internal C
 # function DateCalc_system_clock(), and also directly in its Gmtime(),
@@ -54,6 +50,9 @@ no warnings 'redefine';
 # to d/m/y etc.
 #
 
+{
+  local $^W = 0; # no warnings
+  eval <<'HERE' or die;
 sub System_Clock {
   my ($gmt) = @_;
   return ($gmt ? Gmtime() : Localtime());
@@ -70,36 +69,44 @@ sub Today_and_Now {
 sub This_Year {
   return (System_Clock(@_))[0];
 }
+1
+HERE
+}
 
 {
-  # anonymous sub to avoid adding anything to the Date::Calc namespace
-  my $default_to_time_func = sub {
-    my ($func, $time) = @_;
-    if (! defined $time) { $time = time(); }
-    return $func->($time);
-  };
-  { my $orig;
-    BEGIN { $orig = \&Gmtime; }
-    sub Gmtime { return &$default_to_time_func ($orig, @_) }
-  }
-  { my $orig;
-    BEGIN { $orig = \&Localtime; }
-    sub Localtime { return &$default_to_time_func ($orig, @_) }
-  }
-  { my $orig;
-    BEGIN { $orig = \&Timezone; }
-    sub Timezone { return &$default_to_time_func ($orig, @_) }
-  }
-  { my $orig;
-    BEGIN { $orig = \&Time_to_Date; }
-    sub Time_to_Date { return &$default_to_time_func ($orig, @_) }
-  }
+    local $^W = 0; # no warnings
+    eval <<'HERE' or die;
+
+# anonymous sub to avoid adding anything to the Date::Calc namespace
+my $default_to_time_func = sub {
+  my ($func, $time) = @_;
+  if (! defined $time) { $time = time(); }
+  return &$func($time);
+};
+{ my $orig;
+  BEGIN { $orig = \&Gmtime; }
+  sub Gmtime { return &$default_to_time_func ($orig, @_) }
+}
+{ my $orig;
+  BEGIN { $orig = \&Localtime; }
+  sub Localtime { return &$default_to_time_func ($orig, @_) }
+}
+{ my $orig;
+  BEGIN { $orig = \&Timezone; }
+  sub Timezone { return &$default_to_time_func ($orig, @_) }
+}
+{ my $orig;
+  BEGIN { $orig = \&Time_to_Date; }
+  sub Time_to_Date { return &$default_to_time_func ($orig, @_) }
+}
+1
+HERE
 }
 
 1;
 __END__
 
-=for stopwords pre Ryde Test-MockTime-DateCalc pre-requisites
+=for stopwords pre Ryde Test-MockTime-DateCalc pre-requisites fakery
 
 =head1 NAME
 
@@ -115,7 +122,7 @@ Test::MockTime::DateCalc -- fake time for Date::Calc functions
 =head1 DESCRIPTION
 
 C<Test::MockTime::DateCalc> arranges for the functions in C<Date::Calc> to
-follow the Perl level C<time> function (see L<perlfunc>), and in particular
+follow the Perl level C<time> function (see L<perlfunc>) and in particular
 any fake date/time set there by C<Test::MockTime>.  The following
 C<Date::Calc> functions are changed
 
@@ -138,7 +145,7 @@ argument they're unchanged.
 
 C<Test::MockTime> or similar fakery must be loaded first, before anything
 with a C<time()> call, which includes C<Test::MockTime::DateCalc>.  This is
-the same as all C<CORE::GLOBAL> overrides, see L<CORE/OVERRIDING CORE
+the same as for any C<CORE::GLOBAL> override, see L<CORE/OVERRIDING CORE
 FUNCTIONS>.
 
 C<Test::MockTime::DateCalc> must be loaded before C<Date::Calc>.  If
@@ -162,8 +169,8 @@ you're going to test.
 
 In a test script it's often good to have your own modules early to check
 they correctly load their pre-requisites.  You might want a separate test
-script for that so you don't accidentally rely on
-C<Test::MockTime::DateCalc> loading C<Date::Calc> for you.
+script for that so as not to accidentally rely on
+C<Test::MockTime::DateCalc> loading C<Date::Calc>.
 
 =head2 Other Faking Modules
 
@@ -193,7 +200,7 @@ http://user42.tuxfamily.org/test-mocktime-datecalc/index.html
 
 =head1 COPYRIGHT
 
-Copyright 2009, 2010 Kevin Ryde
+Copyright 2009, 2010, 2011 Kevin Ryde
 
 Test-MockTime-DateCalc is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License as published by

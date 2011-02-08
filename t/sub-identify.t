@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Copyright 2009, 2010 Kevin Ryde
+# Copyright 2009, 2010, 2011 Kevin Ryde
 
 # This file is part of Test-MockTime-DateCalc.
 #
@@ -18,17 +18,20 @@
 # with Test-MockTime-DateCalc.  If not, see <http://www.gnu.org/licenses/>.
 
 use strict;
-use warnings;
-use Test::More;
+use Test;
+BEGIN {
+  plan tests => 9;
+}
 
-eval { require Sub::Identify; 1 }
-  or plan skip_all => "Sub::Identify not available -- $@";
+my $have_sub_identify = eval { require Sub::Identify; 1 };
+if (! $have_sub_identify) {
+  print STDERR "# Sub::Identify not available -- $@";
+}
+my $skip = $have_sub_identify ? undef : 'due to Sub::Identify not available';
 
 use lib 't';
 use MyTestHelpers;
 BEGIN { MyTestHelpers::nowarnings() }
-
-plan tests => 9;
 
 require Test::MockTime::DateCalc;
 require Date::Calc;
@@ -49,9 +52,10 @@ foreach (qw(System_Clock
   my $fullname = "Date::Calc::$name";
   my $coderef = do { no strict 'refs';
                      \&$fullname };
-  my $subname = Sub::Identify::sub_name ($coderef);
-  is ($subname, $name,
-      "name of $name $coderef");
+  skip ($skip,
+        $have_sub_identify && Sub::Identify::sub_name($coderef),
+        $name,
+        "name of $name $coderef");
 }
 
 exit 0;

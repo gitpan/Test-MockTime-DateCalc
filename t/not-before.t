@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Copyright 2009, 2010 Kevin Ryde
+# Copyright 2009, 2010, 2011 Kevin Ryde
 
 # This file is part of Test-MockTime-DateCalc.
 #
@@ -18,9 +18,10 @@
 # with Test-MockTime-DateCalc.  If not, see <http://www.gnu.org/licenses/>.
 
 use strict;
-use warnings;
-
-use Test::More tests => 2;
+use Test;
+BEGIN {
+  plan tests => 2;
+}
 use Date::Calc;
 
 use lib 't';
@@ -29,10 +30,12 @@ BEGIN { MyTestHelpers::nowarnings() }
 
 my $ok = eval { require Test::MockTime::DateCalc };
 my $error = $@;
-diag ($ok ? 'oops, no error' : "error message (expected): $error");
-
-ok (! $ok, 'should not load');
-like ($error, '/cannot fake/',
-      "error message should say 'cannot fake'");
+MyTestHelpers::diag ($ok
+                     ? 'oops, no error'
+                     : "error message (expected): $error");
+ok (! $ok, 1,
+    'should not load');
+ok ($error, '/cannot fake/',
+    "error message should say 'cannot fake'");
 
 exit 0;

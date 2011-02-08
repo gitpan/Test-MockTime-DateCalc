@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Copyright 2009, 2010 Kevin Ryde
+# Copyright 2009, 2010, 2011 Kevin Ryde
 
 # This file is part of Test-MockTime-DateCalc.
 #
@@ -18,75 +18,122 @@
 # with Test-MockTime-DateCalc.  If not, see <http://www.gnu.org/licenses/>.
 
 use strict;
-use warnings;
-use Test::More;
+use Test;
+BEGIN {
+  plan tests => 7;
+}
+
+# this is before nowarnings() since Test::MockTime 0.12 gets some warnings
+# from perl 5.6.2 about prototype mismatches
+my $have_test_mocktime;
+my $skip;
+BEGIN {
+  $have_test_mocktime = eval { require Test::MockTime; 1 } ;
+  if (! $have_test_mocktime) {
+    print STDERR "# Test::MockTime not available -- $@";
+  }
+  $skip = ($have_test_mocktime ? undef : 'due to Test::MockTime not available');
+}
 
 use lib 't';
 use MyTestHelpers;
 BEGIN { MyTestHelpers::nowarnings() }
-
-BEGIN {
-  if (! eval { require Test::MockTime }) {
-    plan skip_all => "due to Test::MockTime not available -- $@";
-  }
-  plan tests => 7;
-}
 
 use Test::MockTime::DateCalc;
 use Date::Calc;
 
 
 my $fake_str = "10 Jan 1990 12:30:00 GMT";
-diag $fake_str;
+print STDERR "# $fake_str\n";
 #                                      S  M  H   D M Y
 require Time::Local;
 my $fake_time_t = Time::Local::timegm (0,30,12, 10,0,90);
-Test::MockTime::set_fixed_time ($fake_time_t);
+if ($have_test_mocktime) {
+  Test::MockTime::set_fixed_time ($fake_time_t);
+}
 sleep 2;
-diag "gmtime($fake_time_t) is ", join(' ',gmtime($fake_time_t));
+print STDERR
+  "# gmtime($fake_time_t) is ", join(' ',gmtime($fake_time_t)), "\n";
+
+sub numeq_array {
+  my ($a1, $a2) = @_;
+  while (@$a1 && @$a2) {
+    if ($a1->[0] ne $a2->[0]) {
+      return 0;
+    }
+    shift @$a1;
+    shift @$a2;
+  }
+  return (@$a1 == @$a2);
+}
 
 {
   my $func = 'System_Clock';
   my @got = Date::Calc::System_Clock(1);
-  diag "$func ", join(' ',@got);
-  is_deeply (\@got, [1990,1,10, 12,30,0, 10,3,0], "$fake_str - $func");
+  print STDERR  "# $func ", join(' ',@got), "\n";
+  skip ($skip,
+        numeq_array(\@got,
+                  [1990,1,10, 12,30,0, 10,3,0]),
+      1,
+      "$fake_str - $func");
 }
 {
   my $func = 'Today';
-  is_deeply ([Date::Calc::Today(1)], [1990,1,10], "$fake_str - $func");
+  skip ($skip,
+        numeq_array([Date::Calc::Today(1)],
+                    [1990,1,10]),
+        1,
+        "$fake_str - $func");
 }
 {
   my $func = 'Now';
-  is_deeply ([Date::Calc::Now(1)], [12,30,0], "$fake_str - $func");
+  skip ($skip,
+        numeq_array([Date::Calc::Now(1)],
+                    [12,30,0]),
+        1,
+        "$fake_str - $func");
 }
 {
   my $func = 'Today_and_Now';
-  is_deeply ([Date::Calc::Today_and_Now(1)],
-             [1990,1,10, 12,30,0], "$fake_str - $func");
+  skip ($skip,
+        numeq_array([Date::Calc::Today_and_Now(1)],
+                    [1990,1,10, 12,30,0]),
+        1,
+        "$fake_str - $func");
 }
 {
   my $func = 'This_Year';
-  is_deeply ([Date::Calc::This_Year(1)], [1990], "$fake_str - $func");
+  skip ($skip,
+        numeq_array([Date::Calc::This_Year(1)],
+                    [1990]),
+        1,
+        "$fake_str - $func");
 }
 {
   my $func = 'Gmtime';
-  is_deeply ([Date::Calc::Gmtime()],
-             [1990,1,10, 12,30,0, 10,3,0], "$fake_str - $func");
+  skip ($skip,
+        numeq_array([Date::Calc::Gmtime()],
+                    [1990,1,10, 12,30,0, 10,3,0]),
+        1,
+        "$fake_str - $func");
 }
 {
   my $func = 'Localtime';
-  # is_deeply ([Date::Calc::Localtime()], [1990,1,10, 12,30,0, 10,3,0], "$fake_str - $func");
+  # ok (numeq_array([Date::Calc::Localtime()], [1990,1,10, 12,30,0, 10,3,0], "$fake_str - $func");
 }
 {
   my $func = 'Timezone';
   # FIXME: not sure can reliably force a timezone to check this
-  # is_deeply ([Date::Calc::Timezone()], [0,0,0, 1,0,0, 0], "$fake_str - Timezone");
+  # ok (numeq_array([Date::Calc::Timezone()], [0,0,0, 1,0,0, 0], "$fake_str - Timezone");
 }
 {
   my $func = 'Time_to_Date';
   # FIXME: is this right for old MacOS, or is it local time?
-  is_deeply ([Date::Calc::Time_to_Date()],
-             [1990,1,10, 12,30,0], "$fake_str - $func");
+  skip ($skip,
+        numeq_array([Date::Calc::Time_to_Date()],
+                    [1990,1,10, 12,30,0]),
+        1,
+        "$fake_str - $func");
 }
 
 exit 0;

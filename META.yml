@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Test-MockTime-DateCalc
-version:            5
+version:            6
 abstract:           Fake date/time for Date::Calc functions.
 author:
     - Kevin Ryde <user42@zip.com.au>
@@ -13,8 +13,7 @@ build_requires:
 requires:
     Date::Calc:  4
     perl:        5
-    Test::More:  0
-    warnings:    0
+    Test:        0
 resources:
     homepage:  http://user42.tuxfamily.org/test-mocktime-datecalc/index.html
     license:   http://www.gnu.org/licenses/gpl.html

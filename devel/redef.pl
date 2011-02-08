@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Copyright 2009, 2010 Kevin Ryde
+# Copyright 2009, 2010, 2011 Kevin Ryde
 
 # This file is part of Test-MockTime-DateCalc.
 #
@@ -20,7 +20,7 @@
 
 package Foo;
 use strict;
-use warnings;
+
 use Date::Calc ('Today');
 
 sub foo_today {
